@@ -11,31 +11,37 @@
     --glass-border: rgba(255, 255, 255, 0.7);
 }
 
-html, body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    /* Aseguramos que no haya scroll horizontal por los blobs */
-    overflow-x: hidden; 
+html {
+    box-sizing: border-box;
+    height: 100%; /* Asegura la altura base */
+}
+
+*, *:before, *:after {
+    box-sizing: inherit;
 }
 
 body {
-    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100%; /* Permite que crezca si el contenido es largo */
+    
     font-family: 'Poppins', sans-serif;
     background: linear-gradient(135deg, var(--pink-bg-light) 0%, var(--pink-bg-dark) 100%);
     color: var(--text-dark);
     
-    /* FLEX CORREGIDO: En móviles permite scroll, en desktop centra */
+    /* CORRECCIÓN DEL SCROLL: */
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
+    /* Quitamos 'justify-content: center' para que no bloquee el scroll */
+    justify-content: flex-start; 
     
-    /* Importante para el 3D */
-    perspective: 1000px; 
+    overflow-x: hidden; /* Evita scroll lateral por los blobs */
+    position: relative;
 }
 
-/* --- Blobs de fondo (Ajustados para no molestar en móvil) --- */
+/* --- Blobs de fondo (Igual que antes) --- */
 .blob {
     position: absolute;
     border-radius: 50%;
@@ -45,19 +51,21 @@ body {
     animation: floatBlob 10s infinite alternate ease-in-out;
 }
 .blob-1 { 
-    width: 50vw; /* Usamos viewport width en lugar de px fijos */
-    height: 50vw; 
+    width: 50vw; height: 50vw; 
     max-width: 300px; max-height: 300px;
     background: var(--pink-accent-1); 
-    top: -10%; left: -10%; 
+    top: 0; left: 0; /* Ajustado para que no se corte */
 }
 .blob-2 { 
-    width: 60vw; 
-    height: 60vw; 
+    width: 60vw; height: 60vw; 
     max-width: 400px; max-height: 400px;
     background: var(--pink-accent-2); 
-    bottom: -10%; right: -10%; 
+    bottom: 0; right: 0; 
     animation-delay: -5s; 
+}
+@keyframes floatBlob {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(20px, 30px) scale(1.1); }
 }
 
 @keyframes floatBlob {
@@ -68,12 +76,20 @@ body {
 /* --- Contenedor Principal --- */
 .award-container {
     text-align: center;
-    width: 90%; /* Ocupa el 90% del ancho en móviles */
+    width: 90%;
     max-width: 600px;
     position: relative;
     z-index: 2;
     transform-style: preserve-3d;
-    padding: 40px 0; /* Espacio arriba y abajo para scrollear */
+    
+    /* Espacio vital para que se pueda hacer scroll */
+    margin-top: 40px;       /* Espacio arriba */
+    margin-bottom: 100px;   /* MUCHO espacio abajo para llegar al PD cómodamente */
+    
+    /* Truco: Si la pantalla es gigante, esto ayuda a centrar, 
+       pero si es pequeña, respeta los márgenes */
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .jury-header {
