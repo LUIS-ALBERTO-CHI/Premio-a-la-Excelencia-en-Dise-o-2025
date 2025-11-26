@@ -1,0 +1,321 @@
+/* --- style.css CORREGIDO PARA MÓVILES --- */
+
+:root {
+    --pink-bg-light: #fff0f3;
+    --pink-bg-dark: #ffe3e8;
+    --pink-accent-1: #ffb6c1;
+    --pink-accent-2: #ff8fab;
+    --gold-accent: #ffd700;
+    --text-dark: #5d3a4a;
+    --glass-bg: rgba(255, 255, 255, 0.45);
+    --glass-border: rgba(255, 255, 255, 0.7);
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    /* Aseguramos que no haya scroll horizontal por los blobs */
+    overflow-x: hidden; 
+}
+
+body {
+    min-height: 100vh;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, var(--pink-bg-light) 0%, var(--pink-bg-dark) 100%);
+    color: var(--text-dark);
+    
+    /* FLEX CORREGIDO: En móviles permite scroll, en desktop centra */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+    /* Importante para el 3D */
+    perspective: 1000px; 
+}
+
+/* --- Blobs de fondo (Ajustados para no molestar en móvil) --- */
+.blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(50px);
+    z-index: -1;
+    opacity: 0.5;
+    animation: floatBlob 10s infinite alternate ease-in-out;
+}
+.blob-1 { 
+    width: 50vw; /* Usamos viewport width en lugar de px fijos */
+    height: 50vw; 
+    max-width: 300px; max-height: 300px;
+    background: var(--pink-accent-1); 
+    top: -10%; left: -10%; 
+}
+.blob-2 { 
+    width: 60vw; 
+    height: 60vw; 
+    max-width: 400px; max-height: 400px;
+    background: var(--pink-accent-2); 
+    bottom: -10%; right: -10%; 
+    animation-delay: -5s; 
+}
+
+@keyframes floatBlob {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(20px, 30px) scale(1.1); }
+}
+
+/* --- Contenedor Principal --- */
+.award-container {
+    text-align: center;
+    width: 90%; /* Ocupa el 90% del ancho en móviles */
+    max-width: 600px;
+    position: relative;
+    z-index: 2;
+    transform-style: preserve-3d;
+    padding: 40px 0; /* Espacio arriba y abajo para scrollear */
+}
+
+.jury-header {
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 0.7rem; /* Un poco más pequeño en móvil */
+    color: var(--pink-accent-2);
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+/* --- Títulos --- */
+.hero-section { margin-bottom: 25px; }
+
+.award-title {
+    font-family: 'Cinzel Decorative', cursive;
+    /* TAMAÑO RESPONSIVO: clamp ajusta el tamaño entre un mínimo y un máximo */
+    font-size: clamp(2rem, 5vw, 3.5rem); 
+    line-height: 1.2;
+    margin: 0;
+    background: linear-gradient(45deg, var(--text-dark), var(--pink-accent-2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0px 4px 10px rgba(255, 182, 193, 0.3);
+}
+
+.winner-name {
+    font-size: clamp(1.2rem, 4vw, 2rem);
+    font-weight: 400;
+    color: var(--text-dark);
+    margin-top: 10px;
+}
+.winner-name .highlight {
+    color: var(--pink-accent-2);
+    font-weight: 700;
+    border-bottom: 2px solid var(--gold-accent);
+}
+
+/* --- Wrapper 3D y Trofeo --- */
+.trophy-wrapper-3d {
+    perspective: 1000px; 
+    width: 180px; /* Un poco más pequeño por defecto */
+    height: 180px;
+    margin: 0 auto 25px;
+}
+
+.trophy-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.1s ease-out;
+    transform-style: preserve-3d;
+}
+
+/* Animación de vibración */
+.trophy-container.celebrating {
+    animation: vibrate 0.5s linear infinite both;
+}
+
+@keyframes vibrate {
+  0% { transform: translate(0); }
+  20% { transform: translate(-2px, 2px); }
+  40% { transform: translate(-2px, -2px); }
+  60% { transform: translate(2px, 2px); }
+  80% { transform: translate(2px, -2px); }
+  100% { transform: translate(0); }
+}
+
+.trophy-glow {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: conic-gradient(from 0deg, transparent, var(--pink-accent-1), var(--gold-accent), transparent);
+    animation: rotateGlow 4s linear infinite;
+    opacity: 0.7;
+    transform: translateZ(-20px);
+}
+.trophy-medal {
+    position: relative;
+    width: 110px; /* Ajustado */
+    height: 110px;
+    background: linear-gradient(135deg, #fff, var(--pink-bg-light));
+    border-radius: 50%;
+    border: 4px solid var(--pink-accent-1);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 10px 25px rgba(255, 182, 193, 0.5), inset 0 0 20px rgba(255,255,255,0.8);
+    z-index: 2;
+    transform: translateZ(20px);
+}
+.star { font-size: 2.5rem; color: var(--gold-accent); line-height: 1; }
+.trophy-medal span { font-weight: 700; color: var(--pink-accent-2); font-size: 1rem; }
+@keyframes rotateGlow { 0% { transform: rotate(0deg) translateZ(-20px); } 100% { transform: rotate(360deg) translateZ(-20px); } }
+
+/* --- Botón de Acción --- */
+.action-area { margin-bottom: 30px; }
+.claim-btn {
+    background: linear-gradient(45deg, var(--pink-accent-2), var(--gold-accent));
+    border: none;
+    padding: 12px 30px; /* Padding responsive */
+    border-radius: 50px;
+    color: white;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    width: 100%; /* Botón ancho en móvil */
+    max-width: 300px;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(255, 143, 171, 0.4);
+    transition: all 0.3s ease;
+    outline: none;
+    /* Prevenir zoom en iOS al hacer tap */
+    touch-action: manipulation;
+}
+.claim-btn:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 8px 20px rgba(255, 143, 171, 0.6);
+}
+.claim-btn:active { transform: translateY(1px); }
+.claim-btn.accepted {
+    background: linear-gradient(45deg, #2ecc71, #27ae60);
+    pointer-events: none;
+}
+
+/* --- Tarjeta de Cristal --- */
+.glass-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 2px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 25px; /* Menos padding en móvil */
+    box-shadow: 0 8px 32px 0 rgba(255, 182, 193, 0.2);
+    text-align: left;
+    transition: transform 0.3s ease;
+}
+.glass-card:hover { transform: translateY(-5px); }
+.jury-statement h3 { margin-top: 0; color: var(--pink-accent-2); font-size: 1.1rem; }
+.jury-statement p { line-height: 1.5; font-size: 0.95rem; color: var(--text-dark); margin-bottom: 15px; }
+.signature { margin-top: 15px; font-weight: 600; text-align: right; color: var(--pink-accent-2); font-style: italic; font-size: 0.9rem; }
+
+/* --- Secret Section --- */
+/* --- Secret Section MEJORADA --- */
+.secret-section { 
+    margin-top: 40px; 
+    padding-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.secret-trigger { 
+    cursor: pointer; 
+    font-weight: 700; 
+    color: var(--pink-accent-2);
+    /* Convertimos el texto en un botón estilo "pill" */
+    background: rgba(255, 255, 255, 0.6);
+    border: 2px dashed var(--pink-accent-2); /* Borde punteado sugiere "algo oculto" */
+    padding: 10px 25px;
+    border-radius: 50px;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    
+    /* Animación de latido para llamar la atención */
+    animation: heartbeat 2s infinite;
+    box-shadow: 0 4px 15px rgba(255, 182, 193, 0.2);
+    
+    /* Prevenir selección de texto al hacer clic rápido */
+    user-select: none; 
+    -webkit-tap-highlight-color: transparent;
+}
+
+.secret-trigger:hover { 
+    background: var(--pink-accent-2);
+    color: white;
+    transform: translateY(-2px);
+    animation: none; /* Se detiene el latido al pasar el mouse */
+}
+
+.secret-trigger:active {
+    transform: scale(0.95);
+}
+
+/* Animación suave para mostrar el mensaje */
+.secret-message { 
+    font-style: italic; 
+    color: var(--text-dark);
+    margin-top: 15px; 
+    background: white;
+    padding: 0 20px;
+    border-radius: 10px;
+    max-width: 80%;
+    
+    /* Transición suave de altura y opacidad */
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+    opacity: 1; 
+    max-height: 200px; /* Altura suficiente para el texto */
+    transform: scale(1);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+/* Estado oculto */
+.secret-message.hidden { 
+    opacity: 0; 
+    max-height: 0; 
+    padding: 0 20px; /* Quitar padding para que colapse totalmente */
+    margin-top: 0;
+    transform: scale(0.8);
+    overflow: hidden; 
+}
+
+/* Definimos la animación de latido */
+@keyframes heartbeat {
+    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 143, 171, 0.7); }
+    70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(255, 143, 171, 0); }
+    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 143, 171, 0); }
+}
+/* --- MEDIA QUERIES ESPECÍFICAS (Ajustes finos para teléfonos) --- */
+@media (max-width: 480px) {
+    body {
+        /* En pantallas muy pequeñas, quitamos el centrado forzoso y dejamos que fluya */
+        display: block; 
+        padding-top: 20px;
+    }
+    
+    .award-container {
+        margin: 0 auto;
+    }
+    
+    .award-title {
+        font-size: 2rem; /* Asegurar que no rompa en iPhone SE o similares */
+    }
+    
+    .glass-card {
+        padding: 20px;
+    }
+}
